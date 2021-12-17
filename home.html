@@ -21,10 +21,10 @@
                 <div class="collapse navbar-collapse justify-content-end">
                     <ul class="nav justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html"><b>DANH SÁCH BÃI XE</b></a>
+                            <a class="nav-link" href="#">Danh sách bãi xe</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="listxedangthue.html"><b>DANH SÁCH XE ĐANG THUÊ</b></a>
+                            <a class="nav-link" href="#">Danh sách xe đang thuê</a>
                         </li>
                     </ul>
                     <div class="nav-item dropdown">
@@ -50,36 +50,30 @@
         </form>
     </div>
     <div class="container-fluid justify-content-center" style="max-width: 1300px;">
-        <section class="h-100">
-            <div class="text-center">
-                <h3><strong>DANH SÁCH BÃI XE</strong></h3>
-            </div>
-            <div class="card border-success">
-                <div class="card-body">
-                    <table class="table table-hover text-center table-borderless">
-                        <thead>
-                            <tr class="table-primary">
-                                <th scope="col">STT</th>
-                                <th scope="col">Tên bãi xe</th>
-                                <th scope="col">Mã bãi xe</th>
-                                <th scope="col">Địa chỉ</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Tên bãi xe</td>
-                                <td>XE01</td>
-                                <td>Hoàng Mai-Hà Nội</td>
-                                <td><a href="chitietbaixe.html">Chi tiết</a></td>
-                            </tr>
-                            
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
+        <div style="margin-bottom: 20px;">
+            <h4 class="card-title">Danh sách các bãi xe</h4>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Tên bãi xe</th>
+                    <th>Mã bãi xe</th>
+                    <th>Địa chỉ</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Tên bãi xe</td>
+                    <td>Mã bãi xe</td>
+                    <td>Hoàng Mai-Hà Nội</td>
+                    <td><a href="chitietbaixe.html">Chi tiết</a></td>
+                </tr>
+
+            </tbody>
+        </table>
     </div>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
