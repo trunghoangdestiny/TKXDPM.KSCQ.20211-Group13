@@ -21,10 +21,10 @@
                 <div class="collapse navbar-collapse justify-content-end">
                     <ul class="nav justify-content-center">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Danh sách bãi xe</a>
+                            <a class="nav-link" href="home.html"><b>DANH SÁCH BÃI XE</b></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Danh sách xe đang thuê</a>
+                            <a class="nav-link" href="listxedangthue.html"><b>DANH SÁCH XE ĐANG THUÊ</b></a>
                         </li>
                     </ul>
                     <div class="nav-item dropdown">
@@ -44,43 +44,46 @@
         </nav>
     </header>
     <div class="container-fluid justify-content-center" style="max-width: 1300px;">
-        <div style="margin-bottom: 20px;">
-            <h4 class="card-title"><span>Thông tin chi tiết xe</h4>
+        <div class="text-center">
+            <h3><strong>CHI TIẾT THÔNG TIN XE</strong></h3>
         </div>
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="card">
-                    <div class="card-header">
-                        Thông tin chi tiết xe
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-8">
+                        <div class="card border-success">
+                            <div class="card-header">
+                                <h5 class="card-title text-success">Thông tin chi tiết xe</h5>
+                            </div>
+                            <div class="card-body">
+                                <span>Mã xe : XE01</span><br>
+                                <span>Tên xe : Xe số 1</span><br>
+                                <span>Loại xe : Đơn thường</span><br>
+                                <span>Biển số xe : 11A5-25555 </span><br>
+                                <span>Lượng pin hiện có : 50% </span><br>
+                                <span>Thời gian ước tính : 10 giờ</span><br>
+                                <span>Giá trị xe : 1 000 000 VNĐ</span><br>
+                                <span>Tiền cọc : 400 000 VNĐ</span>
+                            </div>
+        
+                        </div>
+                        <div class="mt-2 text-center">
+                            <button id="pay" type="button" class="btn btn-primary">Thuê ngay và luôn</button>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <span>Mã xe : XE01</span><br>
-                        <span>Tên xe : Xe số 1</span><br>
-                        <span>Loại xe : Đơn thường</span><br>
-                        <span>Biển số xe : 11A5-25555 </span><br>
-                        <span>Lượng pin hiện có : 50% </span><br>
-                        <span>Thời gian ước tính : 10 giờ</span><br>
-                        <span>Giá trị xe : 1 000 000 VNĐ</span><br>
-                        <span>Tiền cọc : 400 000 VNĐ</span>
+                    <div class="col-sm-4">
+                        <div class="card border-success">
+                            <div class="card-body">
+                                <h5 class="card-title">Địa chỉ thuê</h5>
+                                <span>Bãi đỗ xe số 1</span><br>
+                                <span>Địa chỉ hoàng mai hà nội</span>
+                            </div>
+                        </div>
                     </div>
-
-                </div>
-                <div class="" style="padding-top: 20px;">
-                    <button type="text" class="btn btn-primary">
-                        <a style="color: aliceblue;">Thuê ngay và luôn</a>
-                    </button>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Địa chỉ thuê</h5>
-                        <span>Bãi đỗ xe số 1</span><br>
-                        <span>Địa chỉ hoàng mai hà nội</span>
-                    </div>
-                </div>
-            </div>
         </div>
+        
     </div>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
