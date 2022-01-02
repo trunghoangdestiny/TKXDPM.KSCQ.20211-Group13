@@ -58,19 +58,19 @@
                                 <table class="table table-hover">
                                     <tr>
                                         <td>Tên bãi xe</td>
-                                        <td>Bãi xe số 01</td>
+                                        <td>[[${bikeParking.name}]]</td>
                                     </tr>
                                     <tr>
                                         <td>Mã bãi xe</td>
-                                        <td>BXE01</td>
+                                        <td>[[${bikeParking.id}]]</td>
                                     </tr>
                                     <tr>
                                         <td>Địa chỉ</td>
-                                        <td>Hoàng Mai - Hà Nội</td>
+                                        <td>[[${bikeParking.address}]]</td>
                                     </tr>
                                     <tr>
                                         <td>Diện tích bãi xe</td>
-                                        <td>10 km2</td>
+                                        <td>[[${bikeParking.area}]]</td>
                                     </tr>
                                     <tr>
                                         <td>Số lượng còn trống</td>
@@ -104,7 +104,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
+                                            <th>STT</th>
                                             <th>Tên xe</th>
                                             <th>Mã xe</th>
                                             <th>Loại xe</th>
@@ -112,11 +112,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Tên bãi xe</td>
-                                            <td>Mã bãi xe</td>
-                                            <td>Hoàng Mai-Hà Nội</td>
+                                        <tr th:each="bike, state : ${normalSingleBike}">
+                                            <td>[[${state.index + 1}]]</td>
+                                            <td>[[${bike.name}]]</td>
+                                            <td>[[${bike.codeBike}]]</td>
+                                            <td th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}">Xe đạp đơn thường</td>
+                                            <td th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}">Xe đạp đôi thường</td>
+                                            <td th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">Xe đạp đơn điện</td>
                                             <td><a href="bicycleDetails.html">Chi tiết</a></td>
                                         </tr>
         

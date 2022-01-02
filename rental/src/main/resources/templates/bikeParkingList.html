@@ -67,12 +67,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Tên bãi xe</td>
-                            <td>Mã bãi xe</td>
-                            <td>Hoàng Mai-Hà Nội</td>
-                            <td><a class="btn btn-primary" th:href="@{/bike-parking-list/1}">Chi tiết</a></td>
+                        <tr class="p-5" th:each="bikeParking, state : ${bikeParkingList}">
+                            <td>[[${state.index + 1}]]</td>
+                            <td>[[${bikeParking.name}]]</td>
+                            <td>[[${bikeParking.id}]]</td>
+                            <td>[[${bikeParking.address}]]</td>
+                            <td><a class="btn btn-primary"
+                                    th:href="@{'/bike-parking-list/' + ${bikeParking.id}}">Chi tiết</a></td>
                         </tr>
 
                     </tbody>
