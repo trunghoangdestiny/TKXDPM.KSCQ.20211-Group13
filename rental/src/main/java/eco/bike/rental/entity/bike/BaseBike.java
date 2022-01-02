@@ -1,13 +1,11 @@
 package eco.bike.rental.entity.bike;
 
+import eco.bike.rental.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 @Getter
@@ -25,6 +23,10 @@ public abstract class BaseBike {
 
     private Boolean inUsed; // check if bike is using
     private static final Float DEPOSIT_PERCENT = 0.4f;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Float getDepositPrice() {
         return bikePrice * DEPOSIT_PERCENT;

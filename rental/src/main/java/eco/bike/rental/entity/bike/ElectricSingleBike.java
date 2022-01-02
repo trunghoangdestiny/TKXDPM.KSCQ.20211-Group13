@@ -1,6 +1,7 @@
 package eco.bike.rental.entity.bike;
 
 import eco.bike.rental.entity.BikeParking;
+import eco.bike.rental.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

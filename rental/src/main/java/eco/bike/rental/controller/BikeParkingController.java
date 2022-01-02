@@ -35,10 +35,10 @@ public class BikeParkingController {
         List<BikeParking> bikeParkingList = bikeParkingService.findAll();
         model.addAttribute("bikeParkingList", bikeParkingList);
 
-        return "redirect:/bike-parking-list";
+        return "redirect:/bike-parking";
     }
 
-    @GetMapping("/bike-parking-list")
+    @GetMapping("/bike-parking")
     public String getBikeParkingList(Model model) {
         List<BikeParking> bikeParkingList = bikeParkingService.findAll();
         model.addAttribute("bikeParkingList", bikeParkingList);
@@ -46,16 +46,33 @@ public class BikeParkingController {
         return "bikeParkingList";
     }
 
-    @GetMapping("/bike-parking-list/{id}")
+    @GetMapping("/bike-parking/{id}")
     public String getBikeParkingDetails(@PathVariable("id") Long id, Model model) {
         BikeParking bikeParking = bikeParkingService.getById(id);
+
         List<BaseBike> bikes = new ArrayList<>();
-        bikes.addAll(normalSingleBikeService.getAllBikeOfBikeParking(bikeParking.getId()));
-        bikes.addAll(normalCoupleBikeIBikeService.getAllBikeOfBikeParking(bikeParking.getId()));
-        bikes.addAll(electricSingleBikeIBikeService.getAllBikeOfBikeParking(bikeParking.getId()));
-        model.addAttribute("normalSingleBike", bikes); //get all bike in table
+
+        List<NormalSingleBike> normalSingleBikes = normalSingleBikeService.getAllBikeOfBikeParking(id);
+        List<NormalCoupleBike> normalCoupleBikes = normalCoupleBikeIBikeService.getAllBikeOfBikeParking(id);
+        List<ElectricSingleBike> electricSingleBikes = electricSingleBikeIBikeService.getAllBikeOfBikeParking(id);
+
+        bikes.addAll(normalSingleBikes);
+        bikes.addAll(normalCoupleBikes);
+        bikes.addAll(electricSingleBikes);
+        model.addAttribute("bikes", bikes); //get all bike in table
+
+        model.addAttribute("normalSingleBikeQuantity",
+                normalSingleBikes.stream().filter(bike -> bike.getInUsed() == null || !bike.getInUsed()).count());
+        model.addAttribute("normalCoupleBikeQuantity",
+                normalCoupleBikes.stream().filter(bike -> bike.getInUsed() == null || !bike.getInUsed()).count());
+        model.addAttribute("electricSingleBikeQuantity",
+                electricSingleBikes.stream().filter(bike -> bike.getInUsed() == null || !bike.getInUsed()).count());
+
+        model.addAttribute("totalQuantity", bikes.size());
+
         model.addAttribute("bikeParking", bikeParking);
 
         return "bikeParkingDetails";
     }
+
 }

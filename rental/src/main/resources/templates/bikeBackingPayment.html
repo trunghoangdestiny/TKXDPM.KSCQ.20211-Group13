@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <title>Trả xe</title>
@@ -14,37 +14,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light shadow p-3 mb-2 bg-body rounded">
-            <div class="container-fluid justify-content-center">
-                <div>
-                    <a class="navbar-brand" href="#"><strong>ECOBIKE SYSTEM</strong></a>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end">
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="home.html"><b>DANH SÁCH BÃI XE</b></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="rentingBicycleList.html"><b>DANH SÁCH XE ĐANG THUÊ</b></a>
-                        </li>
-                    </ul>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            My name
-                            <img src="avatar.png" class="avatar"
-                                style="vertical-align: middle; width: 50px; height: 35px; border-radius: 10%;">
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
-    </header>
+    <div th:replace="fragments/navbar::navbar"></div>
     <main>
         <section class="h-100">
             <div class="text-center">

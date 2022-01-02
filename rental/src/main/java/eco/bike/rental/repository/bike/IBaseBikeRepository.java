@@ -4,4 +4,5 @@ import java.util.List;
 
 public interface IBaseBikeRepository<T> {
     List<T> findByBikeParkingId(Long bikeParkingId);
+    List<T> findByCodeBike(String bikeCode);
 }

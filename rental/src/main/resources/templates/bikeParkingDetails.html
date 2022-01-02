@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="UTF-8">
@@ -12,36 +12,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light shadow p-3 mb-2 bg-body rounded">
-            <div class="container-fluid justify-content-center">
-                <div>
-                    <a class="navbar-brand" href="#"><strong>ECOBIKE SYSTEM</strong></a>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end">
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="home.html"><b>DANH SÁCH BÃI XE</b></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="rentingBicycleList.html"><b>DANH SÁCH XE ĐANG THUÊ</b></a>
-                        </li>
-                    </ul>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            My name
-                            <img class="avatar" style="vertical-align: middle; width: 50px; height: 35px; border-radius: 10%;">
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
-    </header>
+    <div th:replace="fragments/navbar::navbar"></div>
     <div class="container-fluid justify-content-center" style="max-width: 1300px;">
         <div class="text-center">
             <h3><strong>CHI TIẾT BÃI XE</strong></h3>
@@ -49,7 +20,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-5">
                         <div class="card border-success">
                             <div class="card-header">
                                 <h5 class="card-title text-success">Thông tin chi tiết bãi xe</h5>
@@ -57,48 +28,63 @@
                             <div class="card-body">
                                 <table class="table table-hover">
                                     <tr>
-                                        <td>Tên bãi xe</td>
+                                        <td><strong>Tên bãi xe</strong></td>
                                         <td>[[${bikeParking.name}]]</td>
                                     </tr>
                                     <tr>
-                                        <td>Mã bãi xe</td>
+                                        <td><strong>Mã bãi xe</strong></td>
                                         <td>[[${bikeParking.id}]]</td>
                                     </tr>
                                     <tr>
-                                        <td>Địa chỉ</td>
+                                        <td><strong>Địa chỉ</strong></td>
                                         <td>[[${bikeParking.address}]]</td>
                                     </tr>
                                     <tr>
-                                        <td>Diện tích bãi xe</td>
+                                        <td><strong>Diện tích bãi xe</strong></td>
                                         <td>[[${bikeParking.area}]]</td>
                                     </tr>
                                     <tr>
-                                        <td>Số lượng còn trống</td>
+                                        <td><strong>Tổng số lượng xe</strong></td>
+                                        <td>[[${totalQuantity}]]</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Số vị trí xe còn trống</strong></td>
                                         <td>
                                             <ul>
-                                                <li>Xe đơn thường : 100</li>
-                                                <li>Xe đôi thường : 200</li>
-                                                <li>Xe điện : 300</li>
+                                                <li>Xe đơn thường : [[${normalSingleBikeQuantity}]]</li>
+                                                <li>Xe đôi thường : [[${normalCoupleBikeQuantity}]]</li>
+                                                <li>Xe điện : [[${electricSingleBikeQuantity}]]</li>
                                             </ul>
                                         </td>
                                     </tr>
-        
+
                                     <tr>
-                                        <td>Khoảnh cách ước tính tới bãi xe </td>
+                                        <td><strong> Khoảnh cách ước tính tới bãi xe </strong> </td>
                                         <td>150km</td>
                                     </tr>
                                     <tr>
-                                        <td>Thời gian tới bãi xe bằng đường bộ </td>
+                                        <td><strong> Thời gian tới bãi xe bằng đường bộ </strong></td>
                                         <td>6 tiếng</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-7">
+                    <div class="col-7">
                         <div class="card border-success">
                             <div class="card-header">
                                 <h5 class="card-title text-success">Danh sách xe có trong bãi</h5>
+                            </div>
+                            <div class="row">
+                                <form class="d-inline-flex m-2"
+                                    th:action="@{'/bike-parking/' + ${bikeParking.id} + '/bike'}" method="get">
+                                    <input class="form-control" type="text" placeholder="Nhập mã xe.." name="bikeCode"
+                                        style="width: auto; margin-right: 5px;">
+                                    <button class="btn btn-outline-success" type="submit">Chọn</button>
+                                </form>
+                            </div>
+                            <div th:if="${param.getBikeSuccess != null}" class="text-danger p-2">
+                                Không tồn tại xe có mã vạch vừa nhập hoặc đang được sử dụng.
                             </div>
                             <div class="card-body">
                                 <table class="table table-hover">
@@ -112,26 +98,35 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="bike, state : ${normalSingleBike}">
+                                        <tr th:each="bike, state : ${bikes}">
                                             <td>[[${state.index + 1}]]</td>
                                             <td>[[${bike.name}]]</td>
                                             <td>[[${bike.codeBike}]]</td>
-                                            <td th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}">Xe đạp đơn thường</td>
-                                            <td th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}">Xe đạp đôi thường</td>
-                                            <td th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">Xe đạp đơn điện</td>
-                                            <td><a href="bicycleDetails.html">Chi tiết</a></td>
+                                            <td
+                                                th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}">
+                                                Xe đạp đơn thường</td>
+                                            <td
+                                                th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}">
+                                                Xe đạp đôi thường</td>
+                                            <td
+                                                th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">
+                                                Xe đạp đơn điện</td>
+                                            <td>
+                                                <a th:href="@{'/bike-parking/' +${bikeParking.id} + '/bike?bikeCode=' + ${bike.codeBike}}"
+                                                    type="button" class="btn btn-primary">Chi tiết</a>
+                                            </td>
                                         </tr>
-        
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-        
+
             </div>
         </div>
-        
+
     </div>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

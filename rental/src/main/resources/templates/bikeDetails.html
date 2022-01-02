@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
     <meta charset="UTF-8">
@@ -12,37 +12,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light shadow p-3 mb-2 bg-body rounded">
-            <div class="container-fluid justify-content-center">
-                <div>
-                    <a class="navbar-brand" href="#"><strong>ECOBIKE SYSTEM</strong></a>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end">
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="home.html"><b>DANH SÁCH BÃI XE</b></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="rentingBicycleList.html"><b>DANH SÁCH XE ĐANG THUÊ</b></a>
-                        </li>
-                    </ul>
-                    <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            My name
-                            <img src="avatar.png" class="avatar"
-                                style="vertical-align: middle; width: 50px; height: 35px; border-radius: 10%;">
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </nav>
-    </header>
+    <div th:replace="fragments/navbar::navbar"></div>
     <div class="container-fluid justify-content-center" style="max-width: 1300px;">
         <div class="text-center">
             <h3><strong>CHI TIẾT THÔNG TIN XE</strong></h3>
@@ -56,16 +26,32 @@
                                 <h5 class="card-title text-success">Thông tin chi tiết xe</h5>
                             </div>
                             <div class="card-body">
-                                <span>Mã xe : XE01</span><br>
-                                <span>Tên xe : Xe số 1</span><br>
-                                <span>Loại xe : Đơn thường</span><br>
-                                <span>Biển số xe : 11A5-25555 </span><br>
-                                <span>Lượng pin hiện có : 50% </span><br>
-                                <span>Thời gian ước tính : 10 giờ</span><br>
-                                <span>Giá trị xe : 1 000 000 VNĐ</span><br>
-                                <span>Tiền cọc : 400 000 VNĐ</span>
+                                <span><strong> Mã xe :</strong> [[${bike.codeBike}]]</span><br>
+                                <span><strong> Tên xe :</strong> [[${bike.name}]]</span><br>
+                                <span
+                                    th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}"><strong>Loại
+                                        xe :</strong>
+                                    Đơn thường</span>
+                                <span
+                                    th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}"><strong>Loại
+                                        xe :</strong>
+                                    Đôi thường</span>
+                                <span
+                                    th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Loại
+                                        xe :</strong>
+                                    Đơn điện</span><br>
+                                <span><strong>Biển số xe :</strong> [[${bike.bikeNumber}]] </span><br>
+                                <span
+                                    th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Lượng
+                                        pin hiện có :</strong> [[${bike.currentBattery}]] </span>
+                                <span
+                                    th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Thời
+                                        gian ước tính :</strong> [[${bike.estimatedTime}]] phút</span><br
+                                    th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">
+                                <span><strong>Giá trị xe :</strong> [[${bike.bikePrice}]]</span><br>
+                                <span><strong>Tiền cọc :</strong> [[${bike.bikePrice * 0.4}]] VNĐ</span>
                             </div>
-        
+
                         </div>
                         <div class="mt-2 text-center">
                             <button id="pay" type="button" class="btn btn-primary">Thuê ngay và luôn</button>
@@ -74,7 +60,7 @@
                     <div class="col-sm-4">
                         <div class="card border-success">
                             <div class="card-body">
-                                <h5 class="card-title">Địa chỉ thuê</h5>
+                                <h5 class="card-title"><strong>Địa chỉ thuê</strong></h5>
                                 <span>Bãi đỗ xe số 1</span><br>
                                 <span>Địa chỉ hoàng mai hà nội</span>
                             </div>
@@ -83,7 +69,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"

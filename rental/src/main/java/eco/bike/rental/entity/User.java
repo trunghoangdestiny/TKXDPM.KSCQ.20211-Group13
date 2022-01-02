@@ -1,15 +1,13 @@
 package eco.bike.rental.entity;
 
-import eco.bike.rental.entity.bike.BaseBike;
 import eco.bike.rental.entity.bike.ElectricSingleBike;
+import eco.bike.rental.entity.bike.NormalCoupleBike;
+import eco.bike.rental.entity.bike.NormalSingleBike;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -21,5 +19,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
+    @OneToMany(mappedBy = "user")
+    private List<ElectricSingleBike> electricSingleBikes;
+
+    @OneToMany(mappedBy = "user")
+    private List<NormalSingleBike> normalSingleBikes;
+
+    @OneToMany(mappedBy = "user")
+    private List<NormalCoupleBike> normalCoupleBikes;
 }

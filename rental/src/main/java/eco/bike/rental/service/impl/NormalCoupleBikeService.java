@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NormalCoupleBikeService implements IBikeService<NormalCoupleBike> {
@@ -21,5 +22,12 @@ public class NormalCoupleBikeService implements IBikeService<NormalCoupleBike> {
     @Override
     public List<NormalCoupleBike> getAllBikeOfBikeParking(Long bikeParkingId) {
         return normalCoupleBikeRepository.findByBikeParkingId(bikeParkingId);
+    }
+
+    @Override
+    public List<NormalCoupleBike> getByCodeBike(String bikeCode) {
+        return normalCoupleBikeRepository.findByCodeBike(bikeCode).stream().filter(
+                bike -> bike.getInUsed() == null || !bike.getInUsed()
+        ).collect(Collectors.toList());
     }
 }
