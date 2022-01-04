@@ -5,5 +5,6 @@ import java.util.List;
 public interface IBikeService<T>{
     T save(T t); // use to save or update
     List<T> getAllBikeOfBikeParking(Long bikeParkingId);
-    List<T> getByCodeBike(String bikeCode);
+    List<T> getByCodeBikeAndBikeParkingId(String bikeCode, Long bikeParkingId);
+    T getByIdAndBikeParkingId(Long id, Long bikeParkingId);
 }

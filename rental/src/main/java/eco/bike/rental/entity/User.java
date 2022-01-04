@@ -1,8 +1,5 @@
 package eco.bike.rental.entity;
 
-import eco.bike.rental.entity.bike.ElectricSingleBike;
-import eco.bike.rental.entity.bike.NormalCoupleBike;
-import eco.bike.rental.entity.bike.NormalSingleBike;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,12 +16,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(mappedBy = "user")
-    private List<ElectricSingleBike> electricSingleBikes;
+    private String name;
 
     @OneToMany(mappedBy = "user")
-    private List<NormalSingleBike> normalSingleBikes;
-
-    @OneToMany(mappedBy = "user")
-    private List<NormalCoupleBike> normalCoupleBikes;
+    private List<OrderHistory> orderHistories;
 }

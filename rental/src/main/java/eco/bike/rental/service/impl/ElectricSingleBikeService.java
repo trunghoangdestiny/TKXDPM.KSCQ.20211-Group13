@@ -25,9 +25,12 @@ public class ElectricSingleBikeService implements IBikeService<ElectricSingleBik
     }
 
     @Override
-    public List<ElectricSingleBike> getByCodeBike(String bikeCode) {
-        return electricSingleBikeRepository.findByCodeBike(bikeCode).stream().filter(
-                bike -> bike.getInUsed() == null || !bike.getInUsed()
-        ).collect(Collectors.toList());
+    public List<ElectricSingleBike> getByCodeBikeAndBikeParkingId(String bikeCode, Long bikeParkingId) {
+        return electricSingleBikeRepository.findByCodeBikeAndBikeParkingId(bikeCode, bikeParkingId);
+    }
+
+    @Override
+    public ElectricSingleBike getByIdAndBikeParkingId(Long id, Long bikeParkingId) {
+        return electricSingleBikeRepository.findByIdAndBikeParkingId(id, bikeParkingId);
     }
 }

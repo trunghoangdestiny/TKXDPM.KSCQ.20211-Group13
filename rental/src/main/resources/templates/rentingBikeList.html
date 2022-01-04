@@ -28,7 +28,6 @@
                                 <th scope="col">Tên xe</th>
                                 <th scope="col">Mã xe</th>
                                 <th scope="col">Loại xe</th>
-                                <th scope="col">Thuê tại bãi xe</th>
                                 <th scope="col">Thuê lúc</th>
                                 <th scope="col">Thời gian thuê</th>
                                 <th scope="col">Chi phí</th>
@@ -37,32 +36,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Pro Bike</td>
-                                <td>XE01</td>
-                                <td>Đơn thường</td>
-                                <td>Bãi xe 107</td>
-                                <td>18h15</td>
-                                <td>45 phút</td>
+                            <tr th:each="orderAndBike, state : ${orderAndBikeMap}">
+                                <th scope="row">[[${state.index} + 1]]</th>
+                                <td>[[${orderAndBike.value.name}]]</td>
+                                <td>[[${orderAndBike.value.codeBike}]]</td>
+                                <td>
+                                    <span
+                                        th:if="${orderAndBike.value instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}">Đơn
+                                        thường</span>
+                                    <span
+                                        th:if="${orderAndBike.value instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}">Đôi
+                                        thường</span>
+                                    <span
+                                        th:if="${orderAndBike.value instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">Đơn
+                                        điện</span>
+                                </td>
+                                <td>[[${orderAndBike.key.startedAt}]]</td>
+                                <td>[[${orderAndBike.key.currentRentedTime}]]</td>
                                 <td>10 000 000 VNĐ</td>
                                 <td>30%</td>
                                 <td>
                                     <a class="btn btn-primary" href="bicycleBackingPayment.html">Trả xe</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Pro Bike</td>
-                                <td>XE01</td>
-                                <td>Đơn thường</td>
-                                <td>Bãi xe 107</td>
-                                <td>18h15</td>
-                                <td>45 phút</td>
-                                <td>10 000 000 VNĐ</td>
-                                <td>30%</td>
-                                <td>
-                                    <a class="btn btn-primary" href="#">Trả xe</a>
                                 </td>
                             </tr>
                         </tbody>

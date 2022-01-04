@@ -25,9 +25,12 @@ public class NormalCoupleBikeService implements IBikeService<NormalCoupleBike> {
     }
 
     @Override
-    public List<NormalCoupleBike> getByCodeBike(String bikeCode) {
-        return normalCoupleBikeRepository.findByCodeBike(bikeCode).stream().filter(
-                bike -> bike.getInUsed() == null || !bike.getInUsed()
-        ).collect(Collectors.toList());
+    public List<NormalCoupleBike> getByCodeBikeAndBikeParkingId(String bikeCode, Long bikeParkingId) {
+        return normalCoupleBikeRepository.findByCodeBikeAndBikeParkingId(bikeCode, bikeParkingId);
+    }
+
+    @Override
+    public NormalCoupleBike getByIdAndBikeParkingId(Long id, Long bikeParkingId) {
+        return normalCoupleBikeRepository.findByIdAndBikeParkingId(id, bikeParkingId);
     }
 }

@@ -30,10 +30,18 @@
                                         <strong>Thông tin xe muốn thuê</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tên:&emsp;Pro Bike</span><br>
-                                        <span>Mã:&emsp; XE01</span><br>
-                                        <span>Loại:&emsp;Đơn thường </span>
-                                        <span>Giá:&emsp;1 000 000 VNĐ </span>
+                                        <span><strong>Tên :</strong>&emsp;[[${bike.name}]]</span><br>
+                                        <span><strong>Mã :</strong>&emsp; [[${bike.codeBike}]]</span><br>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}"><strong>Loại
+                                                :</strong>&emsp;Đơn thường </span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}"><strong>Loại
+                                                :</strong>&emsp;Đôi thường </span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Loại
+                                                :</strong>&emsp;Đơn điện </span><br>
+                                        <span><strong>Giá :</strong>&emsp;[[${bike.bikePrice}]] VNĐ</span>
                                     </div>
                                 </div>
                                 <div class="card mt-2 border-success">
@@ -41,9 +49,9 @@
                                         <strong>Thuê xe tại bãi xe</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tên:&emsp;ABC</span><br>
-                                        <span>Mã:&emsp; BXE01</span><br>
-                                        <span>Địa chỉ:&emsp;Công viên Yên Sở </span>
+                                        <span><strong>Tên :</strong>&emsp;[[${bikeParking.name}]]</span><br>
+                                        <span><strong>Mã :</strong>&emsp; [[${bikeParking.id}]]</span><br>
+                                        <span><strong>Địa chỉ :</strong>&emsp;[[${bikeParking.address}]] </span>
                                     </div>
                                 </div>
                                 <div class="card mt-2 border-success">
@@ -51,7 +59,8 @@
                                         <strong>Chi phí</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tiền cọc (= 40% giá xe):&emsp;400 000 VNĐ </span><br>
+                                        <span><strong>Tiền cọc (= 40% giá xe) :</strong>&emsp;[[${bike.bikePrice} *
+                                            0.4]] VNĐ </span><br>
                                     </div>
                                 </div>
                             </div>
@@ -61,21 +70,62 @@
                                         <strong>Thông tin thanh toán</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tên chủ thẻ:&emsp;Hoàng Trung</span><br>
-                                        <span>Mã thẻ:&emsp; 9876543210123</span><br>
-                                        <span>Ngân hàng phát hành:&emsp;Vietin Bank</span><br>
-                                        <span>Ngày hết hạn:&emsp;01/01/2025 </span><br>
-                                        <span>Mã bảo mật:&emsp;956485 </span><br>
-                                        <span>Mội dung giao dịch:&emsp;Thanh toán tiền đặt cọc xe Pro Bike tại bãi xe
-                                            ABC
-                                        </span><br>
+                                        <form id="paymentInformation" th:action="@{/bike-renting/pay}" method="post">
+                                            <div class="mb-3">
+                                                <label for="owner" class="form-label"><strong> Tên chủ thẻ
+                                                        (owner)</strong></label>
+                                                <input type="text" class="form-control" name="owner" id="owner"
+                                                    placeholder="Nhập tên chủ thẻ..." value="Group 13">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cardNumber" class="form-label"><strong> Mã thẻ (card
+                                                        number)</strong></label>
+                                                <input type="text" class="form-control" name="cardNumber"
+                                                    id="cardNumber" placeholder="Nhập mã thẻ..."
+                                                    value="kscq1_group13_2021">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="issuingBank" class="form-label"><strong> Ngân hàng phát hành
+                                                        (issuing
+                                                        bank)</strong></label>
+                                                <input type="text" class="form-control" name="issuingBank"
+                                                    id="issuingBank" placeholder="Nhập tên ngân hàng..."
+                                                    value="VietinBank">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="expirationDate" class="form-label"><strong>Ngày hết hạn
+                                                        (expiration
+                                                        date)</strong></label>
+                                                <input type="text" class="form-control" name="expirationDate"
+                                                    id="expirationDate" placeholder="Nhập ngày hết hạn..." value="1125">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cvvCode" class="form-label"><strong> Mã bảo mật (cvv
+                                                        code)</strong></label>
+                                                <input type="text" class="form-control" name="cvvCode" id="cvvCode"
+                                                    placeholder="Nhập mã bảo mật thẻ..." value="402">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="transactionDescription" class="form-label"><strong> Nội dung
+                                                        giao dịch
+                                                        (transaction description)</strong></label>
+                                                <textarea type="text" class="form-control" name="transactionDescription"
+                                                    id="transactionDescription"
+                                                    placeholder="Nội dung giao dịch..."></textarea>
+                                            </div>
+                                            <input type="text" th:value="${bike.id}" name="rentingBikeId"
+                                                id="rentingBikeId" hidden>
+                                            <input type="text" th:value="${bikeParking.id}" name="rentingBikeParkingId"
+                                                id="rentingBikeParkingId" hidden>
+                                        </form>
                                     </div>
                                     <div class="card-footer text-muted">
                                         <span><strong>TỔNG TIỀN ĐẶT CỌC: &emsp; 400 000 VNĐ</strong></span>
                                     </div>
                                 </div>
                                 <div class="mt-2 text-center">
-                                    <button id="pay" type="button" class="btn btn-primary">Thanh toán</button>
+                                    <button id="pay" form="paymentInformation" type="submit"
+                                        class="btn btn-primary">Thanh toán</button>
                                 </div>
                             </div>
                         </div>

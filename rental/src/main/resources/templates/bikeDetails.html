@@ -53,16 +53,17 @@
                             </div>
 
                         </div>
-                        <div class="mt-2 text-center">
-                            <button id="pay" type="button" class="btn btn-primary">Thuê ngay và luôn</button>
+                        <div class="mt-2 text-center" th:if="${bike.inUsed == null || bike.inUsed == false}">
+                            <a id="pay" th:href="@{/bike-renting(bikeParkingId=${bikeParking.id}, bikeId=${bike.id})}"
+                                type="button" class="btn btn-primary">Thuê ngay và luôn</a>
                         </div>
                     </div>
                     <div class="col-sm-4">
                         <div class="card border-success">
                             <div class="card-body">
                                 <h5 class="card-title"><strong>Địa chỉ thuê</strong></h5>
-                                <span>Bãi đỗ xe số 1</span><br>
-                                <span>Địa chỉ hoàng mai hà nội</span>
+                                <span>[[${bikeParking.name}]]</span><br>
+                                <span>[[${bikeParking.address}]]</span>
                             </div>
                         </div>
                     </div>
