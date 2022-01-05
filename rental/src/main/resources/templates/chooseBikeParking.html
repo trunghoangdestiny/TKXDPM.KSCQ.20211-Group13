@@ -49,22 +49,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Bãi xe 107</td>
-                                    <td>BXE01</td>
-                                    <td>Công viên Thống Nhất</td>
+                                <tr th:each="bikeParking, state : ${bikeParkingList}">
+                                    <th scope="row">[[${state.index} + 1]]</th>
+                                    <td>[[${bikeParking.name}]]</td>
+                                    <td>[[${bikeParking.id}]]</td>
+                                    <td>[[${bikeParking.address}]]</td>
                                     <td>
-                                        <a class="btn btn-primary" href="traxe.html">Chọn</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Bãi xe 222</td>
-                                    <td>BXE02</td>
-                                    <td>160 Bách Khoa</td>
-                                    <td>
-                                        <a class="btn btn-primary" href="#">Chọn</a>
+                                        <a class="btn btn-primary"
+                                            th:href="@{/bike-backing/pay(bikeCode=${bikeCode}, orderId=${orderId}, bikeParkingId=${bikeParking.id})}">Chọn</a>
                                     </td>
                                 </tr>
                             </tbody>

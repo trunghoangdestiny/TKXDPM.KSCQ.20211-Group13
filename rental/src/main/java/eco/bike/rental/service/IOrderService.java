@@ -8,4 +8,5 @@ import java.util.Map;
 public interface IOrderService {
     OrderHistory save(OrderHistory orderHistory);
     Map<OrderHistory, BaseBike> getAllOrder();
+    OrderHistory getOrderById(Long id);
 }

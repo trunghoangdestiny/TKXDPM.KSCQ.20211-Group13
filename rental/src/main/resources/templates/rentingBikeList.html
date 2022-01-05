@@ -56,7 +56,8 @@
                                 <td>[[${orderAndBike.key.currentPrice}]] VND</td>
                                 <td>30%</td>
                                 <td>
-                                    <a th:href="@{/bike-backing(bikeId=${orderAndBike.value.id})}" class="btn btn-primary">Trả xe</a>
+                                    <a th:href="@{/bike-backing(bikeCode=${orderAndBike.value.codeBike}, orderId=${orderAndBike.key.id})}"
+                                        class="btn btn-primary">Trả xe</a>
                                 </td>
                             </tr>
                         </tbody>

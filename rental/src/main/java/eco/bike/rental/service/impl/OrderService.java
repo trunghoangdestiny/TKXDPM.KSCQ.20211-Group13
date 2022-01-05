@@ -77,6 +77,9 @@ public class OrderService implements IOrderService {
             ICalculateFee normalCalculateFee = new NormalCalculateFee();
             orderHistoryList.get(i).setCurrentPrice(normalCalculateFee.calculateFee(usedTime));
 
+            //save to db
+            orderRepository.save(orderHistoryList.get(i));
+
             BaseBike bike = normalSingleBikeService.getByCodeBike(orderHistoryList.get(i).getBikeCode());
             if (bike != null) {
                 orderMap.put(orderHistoryList.get(i), bike);
@@ -95,5 +98,10 @@ public class OrderService implements IOrderService {
             }
         }
         return orderMap;
+    }
+
+    @Override
+    public OrderHistory getOrderById(Long id) {
+        return orderRepository.getById(id);
     }
 }

@@ -30,9 +30,17 @@
                                         <strong>Thông tin xe muốn trả</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tên:&emsp;Pro Bike</span><br>
-                                        <span>Mã:&emsp; XE01</span><br>
-                                        <span>Loại:&emsp;Đơn thường </span>
+                                        <span><strong>Tên :</strong>&emsp;[[${bike.name}]]</span><br>
+                                        <span><strong>Mã :</strong>&emsp; [[${bike.codeBike}]]</span><br>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}"><strong>Loại
+                                                :</strong>&emsp;Đơn thường </span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}"><strong>Loại
+                                                :</strong>&emsp;Đôi thường </span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Loại
+                                                :</strong>&emsp;Đơn điện </span>
                                     </div>
                                 </div>
                                 <div class="card mt-2 border-success">
@@ -40,9 +48,9 @@
                                         <strong>Trả xe tại bãi xe</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tên:&emsp;ABC</span><br>
-                                        <span>Mã:&emsp; BXE01</span><br>
-                                        <span>Địa chỉ:&emsp;Công viên Yên Sở </span>
+                                        <span><strong>Tên :</strong>&emsp;[[${bikeParking.name}]]</span><br>
+                                        <span><strong>Mã :</strong>&emsp; [[${bikeParking.id}]]</span><br>
+                                        <span><strong>Địa chỉ :</strong>&emsp;[[${bikeParking.address}]] </span>
                                     </div>
                                 </div>
                                 <div class="card mt-2 border-success">
@@ -50,10 +58,31 @@
                                         <strong>Chi phí</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tổng thời gian thuê:&emsp;90 phút</span><br>
-                                        <span>Tổng tiền thuê:&emsp; 100 000 VNĐ</span><br>
-                                        <span>Tiền đã cọc:&emsp;500 000 VNĐ </span><br>
-                                        <span>Số tiền cần trả:&emsp;-400 000 VNĐ </span>
+                                        <span><strong> Tổng thời gian thuê
+                                                :</strong>&emsp;[[${order.currentRentedTime}]]</span><br>
+                                        <span><strong> Tổng tiền thuê :</strong>&emsp; [[${order.currentPrice}]]
+                                            VND</span><br>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}"><strong>
+                                                Tiền đã cọc :</strong>&emsp;400000 VND </span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}"><strong>
+                                                Tiền đã cọc :</strong>&emsp;550000 VND </span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>
+                                                Tiền đã cọc :</strong>&emsp;700000 VND </span><br>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}"><strong>
+                                                Số tiền cần trả :</strong>&emsp;[[${order.currentPrice} - 400000]]
+                                            VND</span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}"><strong>
+                                                Số tiền cần trả :</strong>&emsp;[[${order.currentPrice} - 550000]]
+                                            VND</span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>
+                                                Số tiền cần trả :</strong>&emsp;[[${order.currentPrice} - 700000]]
+                                            VND</span>
                                     </div>
                                 </div>
                             </div>
@@ -63,20 +92,74 @@
                                         <strong>Thông tin thanh toán</strong>
                                     </div>
                                     <div class="card-body">
-                                        <span>Tên chủ thẻ:&emsp;Hoàng Trung</span><br>
-                                        <span>Mã thẻ:&emsp; 9876543210123</span><br>
-                                        <span>Ngân hàng phát hành:&emsp;Vietin Bank</span><br>
-                                        <span>Ngày hết hạn:&emsp;01/01/2025 </span><br>
-                                        <span>Mã bảo mật:&emsp;956485 </span><br>
-                                        <span>Mội dung giao dịch:&emsp;Thanh toán tiền thuê xe Pro Bike tại bãi xe ABC
-                                        </span><br>
+                                        <form th:action="@{/bike-backing/pay}" method="post" id="fomrBackingBike">
+                                            <div class="mb-3">
+                                                <label for="owner" class="form-label"><strong> Tên chủ thẻ
+                                                        (owner)</strong></label>
+                                                <input type="text" class="form-control" name="owner" id="owner"
+                                                    placeholder="Nhập tên chủ thẻ..." value="Group 13">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cardNumber" class="form-label"><strong> Mã thẻ (card
+                                                        number)</strong></label>
+                                                <input type="text" class="form-control" name="cardNumber"
+                                                    id="cardNumber" placeholder="Nhập mã thẻ..."
+                                                    value="kscq1_group13_2021">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="issuingBank" class="form-label"><strong> Ngân hàng phát hành
+                                                        (issuing
+                                                        bank)</strong></label>
+                                                <input type="text" class="form-control" name="issuingBank"
+                                                    id="issuingBank" placeholder="Nhập tên ngân hàng..."
+                                                    value="VietinBank">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="expirationDate" class="form-label"><strong>Ngày hết hạn
+                                                        (expiration
+                                                        date)</strong></label>
+                                                <input type="text" class="form-control" name="expirationDate"
+                                                    id="expirationDate" placeholder="Nhập ngày hết hạn..." value="1125">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="cvvCode" class="form-label"><strong> Mã bảo mật (cvv
+                                                        code)</strong></label>
+                                                <input type="text" class="form-control" name="cvvCode" id="cvvCode"
+                                                    placeholder="Nhập mã bảo mật thẻ..." value="402">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="transactionDescription" class="form-label"><strong> Nội dung
+                                                        giao dịch
+                                                        (transaction description)</strong></label>
+                                                <textarea type="text" class="form-control" name="transactionDescription"
+                                                    id="transactionDescription"
+                                                    placeholder="Nội dung giao dịch..."></textarea>
+                                            </div>
+                                            <input type="text" th:value="${order.id}" name="orderId" id="orderId"
+                                                hidden>
+                                            <input type="text" th:value="${order.currentPrice}" name="amount"
+                                                id="amount" hidden>
+                                            <input type="text" th:value="${bike.codeBike}" name="codeBike" id="codeBike"
+                                                hidden>
+                                            <input type="text" th:value="${bikeParking.id}" name="bikeParkingId"
+                                                id="bikeParkingId" hidden>
+                                        </form>
                                     </div>
                                     <div class="card-footer text-muted">
-                                        <span><strong>TỔNG TIỀN THUÊ: &emsp; - 400 000 VNĐ</strong></span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalSingleBike)}"><strong>
+                                                TỔNG TIỀN:</strong>&emsp;[[${order.currentPrice} - 400000]] VND</span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.NormalCoupleBike)}"><strong>
+                                                TỔNG TIỀN:</strong>&emsp;[[${order.currentPrice} - 550000]] VND</span>
+                                        <span
+                                            th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>
+                                                TỔNG TIỀN:</strong>&emsp;[[${order.currentPrice} - 700000]] VND</span>
                                     </div>
                                 </div>
                                 <div class="mt-2 text-center">
-                                    <button id="pay" type="button" class="btn btn-primary">Thanh toán</button>
+                                    <button form="fomrBackingBike" id="pay" type="submit" class="btn btn-primary">Thanh
+                                        toán</button>
                                 </div>
                             </div>
                         </div>
