@@ -42,8 +42,8 @@ public class RentalApplication {
 //        for (int i = 1; i < 11; i++) {
 //            for (int j = 0; j < numberGenerator.nextInt(4) + 2; j++) {
 ////                NormalSingleBike bike = new NormalSingleBike();
-////                ElectricSingleBike bike = new ElectricSingleBike();
-//                NormalCoupleBike bike = new NormalCoupleBike();
+//                ElectricSingleBike bike = new ElectricSingleBike();
+////                NormalCoupleBike bike = new NormalCoupleBike();
 //                bike.setName("Bike " + j);
 //                bike.setBikeNumber(
 //                        numberGenerator.nextInt(90) + 10 + "-X"
@@ -52,17 +52,19 @@ public class RentalApplication {
 //                );
 //                bike.setCodeBike((numberGenerator.nextInt(90000000) + 10000000) + "");
 //                bike.setBikePrice(1750000f);
+////                bike.setBikePrice(1000000f);
+////                bike.setBikePrice(1375000f);
 //
 //                //for electric bike
-////                bike.setCurrentBattery((long) numberGenerator.nextInt(60) + 41);
-////                bike.setEstimatedTime((long) numberGenerator.nextInt(80) + 121);
+//                bike.setCurrentBattery((long) numberGenerator.nextInt(60) + 41);
+//                bike.setEstimatedTime((long) numberGenerator.nextInt(80) + 121);
 //
 //                BikeParking bikeParking = bikeParkingService.getById((long) i);
 //                bike.setBikeParking(bikeParking);
 //
-////                bike = electricSingleBikeService.save(bike);
+//                bike = electricSingleBikeService.save(bike);
 ////                bike = normalSingleBikeService.save(bike);
-//                bike = normalCoupleBikeService.save(bike);
+////                bike = normalCoupleBikeService.save(bike);
 //            }
 //        }
     }

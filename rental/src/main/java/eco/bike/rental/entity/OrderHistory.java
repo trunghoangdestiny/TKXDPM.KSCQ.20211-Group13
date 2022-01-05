@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -16,9 +15,10 @@ public class OrderHistory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Date startedAt;
-    private Date stoppedAt;
-    private Date currentRentedTime;
+    private String startedAt;
+    private String stoppedAt;
+    private String currentRentedTime;
+    private Long currentPrice;
 
     private Boolean isDone;
     private Boolean isSuccess;
@@ -31,7 +31,7 @@ public class OrderHistory {
     @JoinColumn(name = "card_id")
     private Card card;
 
-    private Long bikeId;
+    private String bikeCode;
     private Long bikeParkingStartId;
     private Long bikeParkingStopId;
 }

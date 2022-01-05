@@ -16,6 +16,6 @@ public class OrderInfoDTO {
 
     private String transactionDescription;
 
-    private Long rentingBikeId;
+    private String rentingBikeCode;
     private Long rentingBikeParkingId;
 }

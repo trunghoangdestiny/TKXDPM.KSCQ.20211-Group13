@@ -22,7 +22,7 @@
             <div class="card">
                 <div class="card-body">
                     <table class="table table-hover text-center table-borderless">
-                        <thead>
+                        <thead class="mb-2">
                             <tr class="table-primary">
                                 <th scope="col">STT</th>
                                 <th scope="col">Tên xe</th>
@@ -51,12 +51,12 @@
                                         th:if="${orderAndBike.value instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">Đơn
                                         điện</span>
                                 </td>
-                                <td>[[${orderAndBike.key.startedAt}]]</td>
-                                <td>[[${orderAndBike.key.currentRentedTime}]]</td>
-                                <td>10 000 000 VNĐ</td>
+                                <td><strong>[[${orderAndBike.key.startedAt}]]</strong></td>
+                                <td><strong>[[${orderAndBike.key.currentRentedTime}]]</strong></td>
+                                <td>[[${orderAndBike.key.currentPrice}]] VND</td>
                                 <td>30%</td>
                                 <td>
-                                    <a class="btn btn-primary" href="bicycleBackingPayment.html">Trả xe</a>
+                                    <a th:href="@{/bike-backing(bikeId=${orderAndBike.value.id})}" class="btn btn-primary">Trả xe</a>
                                 </td>
                             </tr>
                         </tbody>

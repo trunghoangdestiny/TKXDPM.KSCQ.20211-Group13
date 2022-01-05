@@ -3,7 +3,6 @@ package eco.bike.rental.controller;
 import eco.bike.rental.dto.OrderInfoDTO;
 import eco.bike.rental.entity.Card;
 import eco.bike.rental.entity.OrderHistory;
-import eco.bike.rental.entity.bike.BaseBike;
 import eco.bike.rental.entity.bike.ElectricSingleBike;
 import eco.bike.rental.entity.bike.NormalCoupleBike;
 import eco.bike.rental.entity.bike.NormalSingleBike;
@@ -15,12 +14,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
@@ -88,9 +86,13 @@ public class OrderController {
         orderHistory.setUser(userService.getById(1L));
 
         orderHistory.setIsDone(false);
-        orderHistory.setStartedAt(new Date());
 
-        orderHistory.setBikeId(orderInfoDTO.getRentingBikeId());
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+        orderHistory.setStartedAt(simpleDateFormat.format(new Date()));
+
+        orderHistory.setBikeCode(orderInfoDTO.getRentingBikeCode());
         orderHistory.setBikeParkingStartId(orderInfoDTO.getRentingBikeParkingId());
 
         // this is set after receive response from api
@@ -101,30 +103,24 @@ public class OrderController {
         cardService.save(card);
 
         // set bike is in using -> true
-        NormalSingleBike bike = normalSingleBikeService.getByIdAndBikeParkingId(
-                orderInfoDTO.getRentingBikeId(),
-                orderInfoDTO.getRentingBikeParkingId()
-        );
+        NormalSingleBike bike = normalSingleBikeService.getByCodeBike(orderInfoDTO.getRentingBikeCode());
         if (bike != null) {
-            bike.setInUsed(true);
+            bike.setBikeParking(null);
+            bike.setUser(userService.getById(1L));
             normalSingleBikeService.save(bike);
         }
 
-        NormalCoupleBike cbike = normalCoupleBikeService.getByIdAndBikeParkingId(
-                orderInfoDTO.getRentingBikeId(),
-                orderInfoDTO.getRentingBikeParkingId()
-        );
+        NormalCoupleBike cbike = normalCoupleBikeService.getByCodeBike(orderInfoDTO.getRentingBikeCode());
         if (cbike != null) {
-            cbike.setInUsed(true);
+            cbike.setBikeParking(null);
+            cbike.setUser(userService.getById(1L));
             normalCoupleBikeService.save(cbike);
         }
 
-        ElectricSingleBike ebike = electricSingleBikeService.getByIdAndBikeParkingId(
-                orderInfoDTO.getRentingBikeId(),
-                orderInfoDTO.getRentingBikeParkingId()
-        );
+        ElectricSingleBike ebike = electricSingleBikeService.getByCodeBike(orderInfoDTO.getRentingBikeCode());
         if (ebike != null) {
-            ebike.setInUsed(true);
+            ebike.setBikeParking(null);
+            ebike.setUser(userService.getById(1L));
             electricSingleBikeService.save(ebike);
         }
 

@@ -61,12 +61,9 @@ public class BikeParkingController {
         bikes.addAll(electricSingleBikes);
         model.addAttribute("bikes", bikes); //get all bike in table
 
-        model.addAttribute("normalSingleBikeQuantity",
-                normalSingleBikes.stream().filter(bike -> bike.getInUsed() == null || !bike.getInUsed()).count());
-        model.addAttribute("normalCoupleBikeQuantity",
-                normalCoupleBikes.stream().filter(bike -> bike.getInUsed() == null || !bike.getInUsed()).count());
-        model.addAttribute("electricSingleBikeQuantity",
-                electricSingleBikes.stream().filter(bike -> bike.getInUsed() == null || !bike.getInUsed()).count());
+        model.addAttribute("normalSingleBikeQuantity", 10 - normalSingleBikes.size());
+        model.addAttribute("normalCoupleBikeQuantity", 10 - normalCoupleBikes.size());
+        model.addAttribute("electricSingleBikeQuantity", 10 - electricSingleBikes.size());
 
         model.addAttribute("totalQuantity", bikes.size());
 

@@ -34,5 +34,8 @@ public class NormalSingleBikeService implements IBikeService<NormalSingleBike> {
         return normalSingleBikeRepository.findByIdAndBikeParkingId(id, bikeParkingId);
     }
 
-
+    @Override
+    public NormalSingleBike getByCodeBike(String bikeCode) {
+        return normalSingleBikeRepository.findByCodeBike(bikeCode);
+    }
 }

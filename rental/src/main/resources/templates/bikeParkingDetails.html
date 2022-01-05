@@ -94,7 +94,6 @@
                                             <th>Tên xe</th>
                                             <th>Mã xe</th>
                                             <th>Loại xe</th>
-                                            <th>Trạng thái</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -112,7 +111,6 @@
                                             <td
                                                 th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}">
                                                 Xe đạp đơn điện</td>
-                                                <td><div th:if="${bike.inUsed == true}" class="text-success">Đang thuê</div></td>
                                             <td>
                                                 <a th:href="@{'/bike-parking/' +${bikeParking.id} + '/bike/' + ${bike.id}}"
                                                     type="button" class="btn btn-primary">Chi tiết</a>

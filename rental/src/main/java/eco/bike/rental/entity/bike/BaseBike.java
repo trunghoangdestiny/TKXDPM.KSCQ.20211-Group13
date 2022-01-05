@@ -21,7 +21,6 @@ public abstract class BaseBike {
     private String bikeNumber;
     private Float bikePrice;
 
-    private Boolean inUsed; // check if bike is using
     private static final Float DEPOSIT_PERCENT = 0.4f;
 
     @ManyToOne

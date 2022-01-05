@@ -8,13 +8,18 @@ import eco.bike.rental.entity.bike.NormalSingleBike;
 import eco.bike.rental.repository.IOrderRepository;
 import eco.bike.rental.service.IBikeService;
 import eco.bike.rental.service.IOrderService;
+import eco.bike.rental.utils.ICalculateFee;
+import eco.bike.rental.utils.impl.NormalCalculateFee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,32 +50,46 @@ public class OrderService implements IOrderService {
                 .stream()
                 .filter(orderHistory -> orderHistory.getIsSuccess() == true && orderHistory.getIsDone() == false)
                 .collect(Collectors.toList());
+
+        String pattern = "HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
         for (int i = 0; i < orderHistoryList.size(); i++) {
-            orderHistoryList.get(i).setCurrentRentedTime(new Date());
+            //calculate time
+            long usedTime = 0;
+            try {
+                Date startTime = simpleDateFormat.parse(orderHistoryList.get(i).getStartedAt().split(" ")[1]);
+                String currentTimeString = simpleDateFormat.format(new Date());
+                Date currentTime = simpleDateFormat.parse(currentTimeString);
 
-            BaseBike bike = normalSingleBikeService
-                    .getByIdAndBikeParkingId(
-                            orderHistoryList.get(i).getBikeId(),
-                            orderHistoryList.get(i).getBikeParkingStartId()
-                    );
+                long diff = currentTime.getTime() - startTime.getTime();
+
+                TimeUnit timeUnit = TimeUnit.SECONDS;
+                usedTime = timeUnit.convert(diff, TimeUnit.MILLISECONDS); // time in seconds
+                String currentRentedTime = usedTime / 3600 + "h " + (usedTime % 3600) / 60 + "m " + (usedTime % 60) + "s";
+
+                orderHistoryList.get(i).setCurrentRentedTime(currentRentedTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            //calculate fee
+            ICalculateFee normalCalculateFee = new NormalCalculateFee();
+            orderHistoryList.get(i).setCurrentPrice(normalCalculateFee.calculateFee(usedTime));
+
+            BaseBike bike = normalSingleBikeService.getByCodeBike(orderHistoryList.get(i).getBikeCode());
             if (bike != null) {
                 orderMap.put(orderHistoryList.get(i), bike);
                 continue;
             }
 
-            bike = normalCoupleBikeService.getByIdAndBikeParkingId(
-                    orderHistoryList.get(i).getBikeId(),
-                    orderHistoryList.get(i).getBikeParkingStartId()
-            );
+            bike = normalCoupleBikeService.getByCodeBike(orderHistoryList.get(i).getBikeCode());
             if (bike != null) {
                 orderMap.put(orderHistoryList.get(i), bike);
                 continue;
             }
 
-            bike = electricSingleBikeService.getByIdAndBikeParkingId(
-                    orderHistoryList.get(i).getBikeId(),
-                    orderHistoryList.get(i).getBikeParkingStartId()
-            );
+            bike = electricSingleBikeService.getByCodeBike(orderHistoryList.get(i).getBikeCode());
             if (bike != null) {
                 orderMap.put(orderHistoryList.get(i), bike);
             }

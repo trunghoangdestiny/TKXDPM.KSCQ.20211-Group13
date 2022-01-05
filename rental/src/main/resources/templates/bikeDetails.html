@@ -43,7 +43,7 @@
                                 <span><strong>Biển số xe :</strong> [[${bike.bikeNumber}]] </span><br>
                                 <span
                                     th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Lượng
-                                        pin hiện có :</strong> [[${bike.currentBattery}]] </span>
+                                        pin hiện có :</strong> [[${bike.currentBattery}]] <br></span>
                                 <span
                                     th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Thời
                                         gian ước tính :</strong> [[${bike.estimatedTime}]] phút</span><br
@@ -53,7 +53,7 @@
                             </div>
 
                         </div>
-                        <div class="mt-2 text-center" th:if="${bike.inUsed == null || bike.inUsed == false}">
+                        <div class="mt-2 text-center">
                             <a id="pay" th:href="@{/bike-renting(bikeParkingId=${bikeParking.id}, bikeId=${bike.id})}"
                                 type="button" class="btn btn-primary">Thuê ngay và luôn</a>
                         </div>

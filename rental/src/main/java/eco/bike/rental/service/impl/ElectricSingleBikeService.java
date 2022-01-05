@@ -33,4 +33,9 @@ public class ElectricSingleBikeService implements IBikeService<ElectricSingleBik
     public ElectricSingleBike getByIdAndBikeParkingId(Long id, Long bikeParkingId) {
         return electricSingleBikeRepository.findByIdAndBikeParkingId(id, bikeParkingId);
     }
+
+    @Override
+    public ElectricSingleBike getByCodeBike(String bikeCode) {
+        return electricSingleBikeRepository.findByCodeBike(bikeCode);
+    }
 }

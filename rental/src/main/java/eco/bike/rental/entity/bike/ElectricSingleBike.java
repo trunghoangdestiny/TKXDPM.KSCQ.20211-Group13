@@ -17,6 +17,6 @@ public class ElectricSingleBike extends BaseBike{
     private Long estimatedTime;
 
     @ManyToOne
-    @JoinColumn(name = "bike_parking_id", nullable = false)
+    @JoinColumn(name = "bike_parking_id")
     private BikeParking bikeParking;
 }
