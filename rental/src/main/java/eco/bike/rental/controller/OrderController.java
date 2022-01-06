@@ -7,7 +7,9 @@ import eco.bike.rental.entity.OrderHistory;
 import eco.bike.rental.entity.bike.ElectricSingleBike;
 import eco.bike.rental.entity.bike.NormalCoupleBike;
 import eco.bike.rental.entity.bike.NormalSingleBike;
+import eco.bike.rental.interbank.PayOrder;
 import eco.bike.rental.service.*;
+import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -42,24 +47,40 @@ public class OrderController {
     @Autowired
     private IBikeParkingService bikeParkingService;
 
+    @Autowired
+    private PayOrder payOrder;
+
     @GetMapping("/bike-renting/pay")
     private String getResultTransaction(
             @RequestParam(value = "success", required = false) String success,
             @RequestParam(value = "fulledForm", required = false) String fulledForm,
             @RequestParam(value = "availableCard", required = false) String availableCard,
+
+            @RequestParam(value = "invalidCard", required = false) String invalidCard,
+            @RequestParam(value = "notEnoughBalance", required = false) String notEnoughBalance,
+            @RequestParam(value = "serverError", required = false) String serverError,
+            @RequestParam(value = "cheatTransaction", required = false) String cheatTransaction,
+            @RequestParam(value = "notEnoughInfo", required = false) String notEnoughInfo,
+            @RequestParam(value = "versionInfo", required = false) String versionInfo,
+            @RequestParam(value = "invalidAmount", required = false) String invalidAmount,
             Model model
     ) {
-        if (success != null)
-            model.addAttribute("success", success);
-        if (fulledForm != null)
-            model.addAttribute("fulledForm", fulledForm);
-        if (availableCard != null)
-            model.addAttribute("availableCard", availableCard);
+        model.addAttribute("success", success);
+        model.addAttribute("fulledForm", fulledForm);
+        model.addAttribute("availableCard", availableCard);
+
+        model.addAttribute("invalidCard", invalidCard);
+        model.addAttribute("notEnoughBalance", notEnoughBalance);
+        model.addAttribute("serverError", serverError);
+        model.addAttribute("cheatTransaction", cheatTransaction);
+        model.addAttribute("notEnoughInfo", notEnoughInfo);
+        model.addAttribute("versionInfo", versionInfo);
+        model.addAttribute("invalidAmount", invalidAmount);
         return "payResult";
     }
 
     @PostMapping("/bike-renting/pay")
-    public String executeRentalTransaction(OrderInfoDTO orderInfoDTO) {
+    public String executeRentalTransaction(OrderInfoDTO orderInfoDTO) throws NoSuchAlgorithmException, URISyntaxException, IOException, InterruptedException {
         if (orderInfoDTO.getOwner().isEmpty()
                 || orderInfoDTO.getCardNumber().isEmpty()
                 || orderInfoDTO.getIssuingBank().isEmpty()
@@ -96,8 +117,36 @@ public class OrderController {
         orderHistory.setBikeCode(orderInfoDTO.getRentingBikeCode());
         orderHistory.setBikeParkingStartId(orderInfoDTO.getRentingBikeParkingId());
 
-        // this is set after receive response from api
-        orderHistory.setIsSuccess(true);
+        // call api
+        JSONObject responseBody = payOrder.payOrder(
+                card,
+                orderInfoDTO.getAmount(),
+                orderInfoDTO.getTransactionDescription(),
+                "pay"
+        );
+//        System.out.println(responseBody.getString("errorCode"));
+
+        switch (responseBody.getString("errorCode")) {
+            case "00":
+                orderHistory.setIsSuccess(true);
+                break;
+            case "01":
+                return "redirect:/bike-renting/pay?invalidCard=true";
+            case "02":
+                return "redirect:/bike-renting/pay?notEnoughBalance=true";
+            case "03":
+                return "redirect:/bike-renting/pay?serverError=true";
+            case "04":
+                return "redirect:/bike-renting/pay?cheatTransaction=true";
+            case "05":
+                return "redirect:/bike-renting/pay?notEnoughInfo=true";
+            case "06":
+                return "redirect:/bike-renting/pay?versionInfo=false";
+            case "07":
+                return "redirect:/bike-renting/pay?invalidAmount=true";
+        }
+
+//        orderHistory.setIsSuccess(true);
 
         // set card isAvailable -> false
         card.setIsAvailable(false);
@@ -125,6 +174,7 @@ public class OrderController {
             electricSingleBikeService.save(ebike);
         }
 
+        orderHistory.setDeposit(orderInfoDTO.getAmount());
         orderService.save(orderHistory);
 
         return "redirect:/bike-renting/pay?success=true";
@@ -136,22 +186,33 @@ public class OrderController {
             @RequestParam(value = "fulledForm", required = false) String fulledForm,
             @RequestParam(value = "availableCard", required = false) String availableCard,
             @RequestParam(value = "notExistCard", required = false) String notExistCard,
+
+            @RequestParam(value = "invalidCard", required = false) String invalidCard,
+            @RequestParam(value = "notEnoughBalance", required = false) String notEnoughBalance,
+            @RequestParam(value = "serverError", required = false) String serverError,
+            @RequestParam(value = "cheatTransaction", required = false) String cheatTransaction,
+            @RequestParam(value = "notEnoughInfo", required = false) String notEnoughInfo,
+            @RequestParam(value = "versionInfo", required = false) String versionInfo,
+            @RequestParam(value = "invalidAmount", required = false) String invalidAmount,
             Model model
     ) {
-        if (success != null)
-            model.addAttribute("success", success);
-        if (fulledForm != null)
-            model.addAttribute("fulledForm", fulledForm);
-        if (availableCard != null)
-            model.addAttribute("availableCard", availableCard);
-        if (notExistCard != null){
-            model.addAttribute("notExistCard", notExistCard);
-        }
+        model.addAttribute("success", success);
+        model.addAttribute("fulledForm", fulledForm);
+        model.addAttribute("availableCard", availableCard);
+        model.addAttribute("notExistCard", notExistCard);
+
+        model.addAttribute("invalidCard", invalidCard);
+        model.addAttribute("notEnoughBalance", notEnoughBalance);
+        model.addAttribute("serverError", serverError);
+        model.addAttribute("cheatTransaction", cheatTransaction);
+        model.addAttribute("notEnoughInfo", notEnoughInfo);
+        model.addAttribute("versionInfo", versionInfo);
+        model.addAttribute("invalidAmount", invalidAmount);
         return "payResult";
     }
 
     @PostMapping("/bike-backing/pay")
-    public String executeBackingTransaction(BackingInfoDTO backingInfoDTO){
+    public String executeBackingTransaction(BackingInfoDTO backingInfoDTO) throws NoSuchAlgorithmException, URISyntaxException, IOException, InterruptedException {
         if (backingInfoDTO.getOwner().isEmpty()
                 || backingInfoDTO.getCardNumber().isEmpty()
                 || backingInfoDTO.getIssuingBank().isEmpty()
@@ -162,13 +223,42 @@ public class OrderController {
         }
 
         Card card = cardService.getByCardNumber(backingInfoDTO.getCardNumber());
-        if (card == null){
+        if (card == null) {
             return "redirect:/bike-backing/result?notExistCard=true";
         }
 
         OrderHistory orderHistory = orderService.getOrderById(backingInfoDTO.getOrderId());
 
-        // call to api to pay successfully
+        // call api
+        JSONObject responseBody = payOrder.payOrder(
+                card,
+                orderHistory.getDeposit() - backingInfoDTO.getAmount(),
+                backingInfoDTO.getTransactionDescription(),
+                "refund"
+        );
+//        System.out.println(responseBody.getString("errorCode"));
+
+        switch (responseBody.getString("errorCode")) {
+            case "00":
+                orderHistory.setIsSuccess(true);
+                break;
+            case "01":
+                return "redirect:/bike-renting/pay?invalidCard=true";
+            case "02":
+                return "redirect:/bike-renting/pay?notEnoughBalance=true";
+            case "03":
+                return "redirect:/bike-renting/pay?serverError=true";
+            case "04":
+                return "redirect:/bike-renting/pay?cheatTransaction=true";
+            case "05":
+                return "redirect:/bike-renting/pay?notEnoughInfo=true";
+            case "06":
+                return "redirect:/bike-renting/pay?versionInfo=false";
+            case "07":
+                return "redirect:/bike-renting/pay?invalidAmount=true";
+        }
+
+//        orderHistory.setIsSuccess(true);
 
         orderHistory.setIsDone(true);
 
@@ -179,7 +269,7 @@ public class OrderController {
         //set bike
         NormalSingleBike bike = normalSingleBikeService
                 .getByCodeBike(backingInfoDTO.getCodeBike());
-        if (bike != null){
+        if (bike != null) {
             bike.setBikeParking(bikeParkingService.getById(backingInfoDTO.getBikeParkingId()));
             bike.setUser(null);
             normalSingleBikeService.save(bike);
@@ -187,7 +277,7 @@ public class OrderController {
 
         NormalCoupleBike cbike = normalCoupleBikeService
                 .getByCodeBike(backingInfoDTO.getCodeBike());
-        if (cbike != null){
+        if (cbike != null) {
             cbike.setBikeParking(bikeParkingService.getById(backingInfoDTO.getBikeParkingId()));
             cbike.setUser(null);
             normalCoupleBikeService.save(cbike);
@@ -195,7 +285,7 @@ public class OrderController {
 
         ElectricSingleBike ebike = electricSingleBikeService
                 .getByCodeBike(backingInfoDTO.getCodeBike());
-        if (ebike != null){
+        if (ebike != null) {
             ebike.setBikeParking(bikeParkingService.getById(backingInfoDTO.getBikeParkingId()));
             ebike.setUser(null);
             electricSingleBikeService.save(ebike);

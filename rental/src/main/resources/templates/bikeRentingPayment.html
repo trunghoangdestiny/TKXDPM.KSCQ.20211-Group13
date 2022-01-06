@@ -41,7 +41,7 @@
                                         <span
                                             th:if="${bike instanceOf T(eco.bike.rental.entity.bike.ElectricSingleBike)}"><strong>Loại
                                                 :</strong>&emsp;Đơn điện </span><br>
-                                        <span><strong>Giá :</strong>&emsp;[[${bike.bikePrice}]] VNĐ</span>
+                                        <span><strong>Giá :</strong>&emsp;[[${bike.bikePrice}]] VND</span>
                                     </div>
                                 </div>
                                 <div class="card mt-2 border-success">
@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="card-body">
                                         <span><strong>Tiền cọc (= 40% giá xe) :</strong>&emsp;[[${bike.bikePrice} *
-                                            0.4]] VNĐ </span><br>
+                                            0.4]] VND </span><br>
                                     </div>
                                 </div>
                             </div>
@@ -117,10 +117,13 @@
                                                 id="rentingBikeCode" hidden>
                                             <input type="text" th:value="${bikeParking.id}" name="rentingBikeParkingId"
                                                 id="rentingBikeParkingId" hidden>
+                                            <input type="text" th:value="${bike.bikePrice} * 0.4" name="amount"
+                                                id="amount" hidden>
                                         </form>
                                     </div>
                                     <div class="card-footer text-muted">
-                                        <span><strong>TỔNG TIỀN ĐẶT CỌC: &emsp; 400 000 VNĐ</strong></span>
+                                        <span><strong>TỔNG TIỀN ĐẶT CỌC: &emsp;[[${bike.bikePrice} *
+                                            0.4]] VND</strong></span>
                                     </div>
                                 </div>
                                 <div class="mt-2 text-center">

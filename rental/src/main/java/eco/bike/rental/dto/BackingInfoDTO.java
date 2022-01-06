@@ -17,7 +17,7 @@ public class BackingInfoDTO {
     private String transactionDescription;
 
     private Long orderId;
-    private Long amount;
+    private Float amount;
     private String codeBike;
     private Long bikeParkingId;
 }

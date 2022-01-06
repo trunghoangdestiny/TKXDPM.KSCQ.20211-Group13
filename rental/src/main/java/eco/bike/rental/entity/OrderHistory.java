@@ -18,6 +18,8 @@ public class OrderHistory {
     private String startedAt;
     private String stoppedAt;
     private String currentRentedTime;
+
+    private Float deposit;
     private Long currentPrice;
 
     private Boolean isDone;

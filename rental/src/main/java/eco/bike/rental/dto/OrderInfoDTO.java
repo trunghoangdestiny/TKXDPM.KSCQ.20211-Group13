@@ -18,4 +18,6 @@ public class OrderInfoDTO {
 
     private String rentingBikeCode;
     private Long rentingBikeParkingId;
+
+    private Float amount;
 }

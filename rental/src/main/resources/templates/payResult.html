@@ -23,13 +23,35 @@
                         <h1>Thanh toán thành công</h1>
                     </div>
                     <div class="card-body text-center text-danger" th:if="${fulledForm == 'false'}">
-                        <h2>Vui lòng điền đầy đủ thông tin thẻ thanh toán</h2>
+                        <h2>Vui lòng điền đầy đủ thông tin thanh toán</h2>
                     </div>
                     <div class="card-body text-center text-danger" th:if="${availableCard == 'false'}">
                         <h2>Thẻ của bạn đang được sử dụng, vui lòng sử dụng thẻ khác</h2>
                     </div>
                     <div class="card-body text-center text-danger" th:if="${notExistCard == 'true'}">
                         <h2>Thẻ của bạn không thanh toán đặt cọc cho đơn hàng này, vui lòng sử dụng đúng thẻ</h2>
+                    </div>
+
+                    <div class="card-body text-center text-danger" th:if="${invalidCard != null}">
+                        <h2>Thẻ không hợp lệ</h2>
+                    </div>
+                    <div class="card-body text-center text-danger" th:if="${notEnoughBalance != null}">
+                        <h2>Không đủ số dư trong thẻ</h2>
+                    </div>
+                    <div class="card-body text-center text-danger" th:if="${serverError != null}">
+                        <h2>Lỗi server thanh toán</h2>
+                    </div>
+                    <div class="card-body text-center text-danger" th:if="${cheatTransaction != null}">
+                        <h2>Giao dịch không thành công do nghi ngờ có gian lận</h2>
+                    </div>
+                    <div class="card-body text-center text-danger" th:if="${notEnoughInfo != null}">
+                        <h2>Không đủ thông tin giao dịch</h2>
+                    </div>
+                    <div class="card-body text-center text-danger" th:if="${versionInfo != null}">
+                        <h2>Thiếu thông tin phiên bản api</h2>
+                    </div>
+                    <div class="card-body text-center text-danger" th:if="${invalidAmount != null}">
+                        <h2>Amount giao dịch không hợp lệ</h2>
                     </div>
                 </div>
             </div>
