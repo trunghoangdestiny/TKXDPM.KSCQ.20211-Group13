@@ -1,6 +1,4 @@
-package eco.bike.rental.utils.impl;
-
-import eco.bike.rental.utils.ICalculateFee;
+package eco.bike.rental.calculator;
 
 public class NormalCalculateFee implements ICalculateFee {
     @Override

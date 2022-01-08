@@ -9,8 +9,8 @@ import eco.bike.rental.entity.bike.NormalSingleBike;
 import eco.bike.rental.service.IBikeParkingService;
 import eco.bike.rental.service.IBikeService;
 import eco.bike.rental.service.IOrderService;
-import eco.bike.rental.utils.ICalculateFee;
-import eco.bike.rental.utils.impl.NormalCalculateFee;
+import eco.bike.rental.calculator.CalculateFee;
+import eco.bike.rental.calculator.NormalCalculateFee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +41,8 @@ public class BikeBackingController {
 
     @Autowired
     private IOrderService orderService;
+
+    private CalculateFee calculateFee = new CalculateFee(new NormalCalculateFee());
 
     @GetMapping("/bike-backing")
     public String getBikeParkingList(
@@ -85,8 +87,7 @@ public class BikeBackingController {
             e.printStackTrace();
         }
         //calculate fee
-        ICalculateFee normalCalculateFee = new NormalCalculateFee();
-        orderHistory.setCurrentPrice(normalCalculateFee.calculateFee(usedTime));
+        orderHistory.setCurrentPrice(calculateFee.calculateFee(usedTime));
         //save to db
         orderHistory = orderService.save(orderHistory);
 

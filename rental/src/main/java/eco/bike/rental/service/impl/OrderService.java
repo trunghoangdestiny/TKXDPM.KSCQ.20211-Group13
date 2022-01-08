@@ -8,8 +8,8 @@ import eco.bike.rental.entity.bike.NormalSingleBike;
 import eco.bike.rental.repository.IOrderRepository;
 import eco.bike.rental.service.IBikeService;
 import eco.bike.rental.service.IOrderService;
-import eco.bike.rental.utils.ICalculateFee;
-import eco.bike.rental.utils.impl.NormalCalculateFee;
+import eco.bike.rental.calculator.CalculateFee;
+import eco.bike.rental.calculator.NormalCalculateFee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,8 @@ public class OrderService implements IOrderService {
 
     @Autowired
     private IBikeService<ElectricSingleBike> electricSingleBikeService;
+
+    private CalculateFee calculateFee = new CalculateFee(new NormalCalculateFee());
 
     @Override
     public OrderHistory save(OrderHistory orderHistory) {
@@ -74,8 +76,7 @@ public class OrderService implements IOrderService {
             }
 
             //calculate fee
-            ICalculateFee normalCalculateFee = new NormalCalculateFee();
-            orderHistoryList.get(i).setCurrentPrice(normalCalculateFee.calculateFee(usedTime));
+            orderHistoryList.get(i).setCurrentPrice(calculateFee.calculateFee(usedTime));
 
             //save to db
             orderRepository.save(orderHistoryList.get(i));

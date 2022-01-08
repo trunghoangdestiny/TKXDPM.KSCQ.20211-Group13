@@ -1,4 +1,4 @@
-package eco.bike.rental.utils;
+package eco.bike.rental.calculator;
 
 public interface ICalculateFee {
     long calculateFee(long timeInSeconds);
