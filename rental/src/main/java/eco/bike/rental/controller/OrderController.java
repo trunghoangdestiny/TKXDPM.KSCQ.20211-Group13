@@ -7,7 +7,7 @@ import eco.bike.rental.entity.OrderHistory;
 import eco.bike.rental.entity.bike.ElectricSingleBike;
 import eco.bike.rental.entity.bike.NormalCoupleBike;
 import eco.bike.rental.entity.bike.NormalSingleBike;
-import eco.bike.rental.interbank.PayOrder;
+import eco.bike.rental.interbank.BankImpl;
 import eco.bike.rental.service.*;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
@@ -47,8 +47,7 @@ public class OrderController {
     @Autowired
     private IBikeParkingService bikeParkingService;
 
-    @Autowired
-    private PayOrder payOrder;
+    private final BankImpl bank = new BankImpl();
 
     @GetMapping("/bike-renting/pay")
     private String getResultTransaction(
@@ -118,11 +117,10 @@ public class OrderController {
         orderHistory.setBikeParkingStartId(orderInfoDTO.getRentingBikeParkingId());
 
         // call api
-        JSONObject responseBody = payOrder.payOrder(
+        JSONObject responseBody = bank.payOrder(
                 card,
                 orderInfoDTO.getAmount(),
-                orderInfoDTO.getTransactionDescription(),
-                "pay"
+                orderInfoDTO.getTransactionDescription()
         );
 //        System.out.println(responseBody.getString("errorCode"));
 
@@ -230,11 +228,10 @@ public class OrderController {
         OrderHistory orderHistory = orderService.getOrderById(backingInfoDTO.getOrderId());
 
         // call api
-        JSONObject responseBody = payOrder.payOrder(
+        JSONObject responseBody = bank.payOrder(
                 card,
-                orderHistory.getDeposit() - backingInfoDTO.getAmount(),
-                backingInfoDTO.getTransactionDescription(),
-                "refund"
+                backingInfoDTO.getAmount() - orderHistory.getDeposit(),
+                backingInfoDTO.getTransactionDescription()
         );
 //        System.out.println(responseBody.getString("errorCode"));
 
